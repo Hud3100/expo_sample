@@ -1,33 +1,43 @@
 import React from 'react';
-import { Scene, Router, Actions } from 'react-native-router-flux';
-import pageA from './pages/pageA';
-import pageB from './pages/pageB';
-import recordComponent from './pages/kotobaRecord';
+import { Scene, Router, Tabs, Actions } from 'react-native-router-flux';
+import pageA from './screens/pageA';
+import recordComponent from './screens/kotobaRecord';
+import loginScreen from './screens/loginScreen';
 
 const RouterComponent = () => {
   return (
     <Router>
-        <Scene key="root">
+      <Tabs
+        key='root'
+        swipeEnabled={ true }
+        animationEnabled={ false }
+        tabBarStyle={{backgroundColor:'#F8F8F8'}}
+      >
             <Scene
               key="pageA"
               component={pageA}
+              tabBarLabel='ログイン'
               title="pageA"
-              rightTitle="Bへ"
-              onRight={() => { Actions.pageB(); }}
+              // rightTitle="ログイン画面へ"
+              // onRight={(//) => { Actions.loginScreen(); }}
             />
             <Scene
-              key="pageB"
-              component={pageB}
-              title="Page B"
-              rightTitle="言葉を残す"
-              onRight={() => { Actions.recordComponent(); }}
+              key="loginScreen"
+
+              component={loginScreen}
+              tabBarLabel='ログイン'
+              title="ログイン画面"
+              // rightTitle="言葉を残す"
+              // onRight={() => { Actions.recordComponent(); }}
             />
             <Scene
+              initial={ true }
               key="recordComponent"
+              tabBarLabel='ログイン'
               component={recordComponent}
               title="言葉を残す"
             />
-        </Scene>
+      </Tabs>
     </Router>
   )
 }
