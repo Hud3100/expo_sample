@@ -85,7 +85,7 @@ export default recordComponent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#FFF',
     padding: 10,
     alignItems: 'center',
   },
