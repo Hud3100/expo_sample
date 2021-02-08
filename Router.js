@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
   tabBar: {
     borderWidth: 0,
     backgroundColor:'#FFF',
-    // borderTopColor: '#FFF'
   },
   tabIconContainer: {
     justifyContent: 'center',

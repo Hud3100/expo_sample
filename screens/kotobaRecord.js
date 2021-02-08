@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ViewShot, {captureRef} from "react-native-view-shot";
+import PhraseInput from '../component/kokotobaInput';
 
 const recordComponent = () => {
   const [imageURI, setImageURI] = useState('https://raw.githubusercontent.com/AboutReact/sampleresource/master/sample_img.png',);
@@ -25,16 +26,6 @@ const recordComponent = () => {
     } catch (error) {
       console.log('error', error);
     }
-    // console.log(viewRef);
-    // testRef.capture().then(
-    //   (uri) => {
-    //     console.log("success")
-    //     console.log(uri);
-    //     setSavedImagePath(uri);
-    //     setImageURI(uri);
-    //   },
-    //   (error) => console.error('Oops, Something Went Wrong', error),
-    // );
   };
 
   const viewRef = useRef();
@@ -59,9 +50,8 @@ const recordComponent = () => {
             quality: 0.8,
           }}
         >
-          <Text>Test Shot</Text>
+          <PhraseInput />
         </ViewShot>
-
         <TouchableOpacity
           style={styles.buttonStyle}
           onPress={takeScreenShot}
