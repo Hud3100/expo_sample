@@ -4,11 +4,13 @@ import { View, Text, StyleSheet, TextInput } from 'react-native';
 const PhraseInput = () => {
     const [textValue, setTextValue] = useState('ことばを残そう');
     return (
-        <View style={styles.container}>
+        <View style={styles.textInputContainer}>
             <TextInput
                 style={styles.textInput}
                 onChangeText={text => setTextValue(text)}
+                defaultValue={"こんにちは"}
                 value={textValue}
+                multiline={true}
             />
         </View>
     );
@@ -16,12 +18,17 @@ const PhraseInput = () => {
 
 export default PhraseInput;
 
+
+import { Dimensions } from "react-native";
+
+var width = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
+    textInputContainer: {
+        flex: 1,
     },
     textInput: {
-        height: 40,
-        borderColor: '#000'
+        flex: 1,
+        fontSize: 50,
     }
 })

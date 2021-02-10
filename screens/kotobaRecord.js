@@ -33,7 +33,7 @@ const recordComponent = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        <Image
+        {/* <Image
           source={{uri: imageURI}}
           style={{
             width: 200,
@@ -41,9 +41,9 @@ const recordComponent = () => {
             resizeMode: 'contain',
             marginTop: 5
           }}
-        />
+        /> */}
         <ViewShot
-          style={styles.container}
+          style={styles.viewShot}
           ref={viewRef}
           options={{
             format: 'jpg',
@@ -59,11 +59,11 @@ const recordComponent = () => {
           <Text style={styles.buttonTextStyle}>
             Take ScreenShot
           </Text>
-          <Text style={styles.textStyle}>
+          {/* <Text style={styles.textStyle}>
             {
               savedImagePath ? `Saved Image Path\n ${savedImagePath}` : ''
             }
-          </Text>
+          </Text> */}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -76,8 +76,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    padding: 10,
-    alignItems: 'center',
+  },
+  viewShot: {
+    flex: 1,
+    alignItems: 'stretch'
   },
   titleText: {
     fontSize: 22,
