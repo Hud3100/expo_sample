@@ -6,6 +6,8 @@ import {
   View,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 import ViewShot, {captureRef} from "react-native-view-shot";
 import PhraseInput from '../component/kokotobaInput';
@@ -32,40 +34,35 @@ const recordComponent = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        {/* <Image
-          source={{uri: imageURI}}
-          style={{
-            width: 200,
-            height: 300,
-            resizeMode: 'contain',
-            marginTop: 5
-          }}
-        /> */}
-        <ViewShot
-          style={styles.viewShot}
-          ref={viewRef}
-          options={{
-            format: 'jpg',
-            quality: 0.8,
-          }}
-        >
-          <PhraseInput />
-        </ViewShot>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          onPress={takeScreenShot}
-        >
-          <Text style={styles.buttonTextStyle}>
-            Take ScreenShot
-          </Text>
-          {/* <Text style={styles.textStyle}>
-            {
-              savedImagePath ? `Saved Image Path\n ${savedImagePath}` : ''
-            }
-          </Text> */}
-        </TouchableOpacity>
-      </View>
+        <View style={styles.container}>
+          {/* <Image
+            source={{uri: imageURI}}
+            style={{
+              width: 200,
+              height: 300,
+              resizeMode: 'contain',
+              marginTop: 5
+            }}
+          /> */}
+          <ViewShot
+            style={styles.viewShot}
+            ref={viewRef}
+            options={{
+              format: 'jpg',
+              quality: 0.8,
+            }}
+          >
+            <PhraseInput />
+          </ViewShot>
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={takeScreenShot}
+          >
+            <Text style={styles.buttonTextStyle}>
+              Take ScreenShot
+            </Text>
+          </TouchableOpacity>
+        </View>
     </SafeAreaView>
   )
 };
