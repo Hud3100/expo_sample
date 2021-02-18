@@ -28,7 +28,7 @@ const RouterComponent = () => {
       >
         <Scene
           key="recordComponent"
-          initial={true}
+
           component={recordComponent}
           title="言葉を残す"
           iconName='plus-circle'
@@ -43,6 +43,7 @@ const RouterComponent = () => {
         />
         <Scene
           key="loginScreen"
+          initial={true}
           component={loginScreen}
           tabBarLabel='設定'
           title="ログイン画面"
