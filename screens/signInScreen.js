@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TouchableOpacity, TouchableHighlight,
-        TextInput, ActivityIndicator, StyleSheet, KeyboardAvoidingView, KeyboardAvoidingViewBase } from 'react-native';
+import {
+    View, Text, Button, TouchableOpacity, TouchableHighlight,
+    TextInput, ActivityIndicator, StyleSheet, KeyboardAvoidingView, KeyboardAvoidingViewBase
+} from 'react-native';
 import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
 
-
-const loginScreen = () => {
-
+const signInScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState('');
@@ -31,8 +32,11 @@ const loginScreen = () => {
     }
 
     return (
-        <KeyboardAvoidingView style={styles.container}>
-            <Text style={styles.title}>ココトバ</Text>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : null}
+        >
+            <Text style={styles.title}>ココトバにログイン</Text>
             <TextInput
                 style={styles.input}
                 value={email}
@@ -50,8 +54,18 @@ const loginScreen = () => {
                 placeholder="Password"
                 secureTextEntry
             />
-            <TouchableHighlight style={styles.button} onPress={ () => onButtonPress()} underlayColor="#C70F66">
-                <Text style={styles.buttonTitle}>利用登録</Text>
+            <TouchableHighlight
+                style={styles.button}
+                onPress={ () => onButtonPress()} underlayColor="#C70F66"
+            >
+                <Text style={styles.buttonTitle}>ログインする！</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                style={styles.button}
+                onPress={ () => { Actions.signUp(); }}
+                underlayColor="#C70F66"
+            >
+                <Text style={styles.buttonTitle}>利用登録する！</Text>
             </TouchableHighlight>
         </KeyboardAvoidingView>
     );
@@ -97,4 +111,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default loginScreen;
+export default signInScreen;
