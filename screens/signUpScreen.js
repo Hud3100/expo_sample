@@ -14,11 +14,11 @@ const signUpScreen = () => {
     const onButtonPress = () => {
         setLoading(true);
         firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(LoginSuccess())
+            .then(signUpSuccess())
             .catch( (error) => {console.log(error.toString());} );
     }
 
-    const LoginSuccess = () => {
+    const signUpSuccess = () => {
         setEmail('');
         setPassword('');
         setLoading(false);

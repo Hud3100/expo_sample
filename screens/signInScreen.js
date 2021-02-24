@@ -14,8 +14,8 @@ const signInScreen = () => {
 
     const onButtonPress = () => {
         setLoading(true);
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(LoginSuccess())
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then( () => {LoginSuccess();} )
             .catch( (error) => {console.log(error.toString());} );
     }
 
@@ -24,6 +24,7 @@ const signInScreen = () => {
         setPassword('');
         setLoading(false);
         setError('');
+        console.log("Login Success");
     }
 
     const LoginFail = () => {
