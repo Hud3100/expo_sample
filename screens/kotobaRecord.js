@@ -9,22 +9,48 @@ import {
   KeyboardAvoidingView,
   Platform
 } from 'react-native';
-import ViewShot, {captureRef} from "react-native-view-shot";
+import ViewShot, { captureRef } from "react-native-view-shot";
 import PhraseInput from '../component/kokotobaInput';
+import firebase from "firebase";
 
 const recordComponent = () => {
   const [imageURI, setImageURI] = useState('https://raw.githubusercontent.com/AboutReact/sampleresource/master/sample_img.png',);
   const [savedImagePath, setSavedImagePath] = useState('');
+  const db = firebase.firestore();
 
   const takeScreenShot = async () => {
     try {
-      const uri = await captureRef(viewRef, {
+      const imgUri = await captureRef(viewRef, {
         format: 'jpg',
         quality: 0.8,
+        result: "tmpfile"
       });
-      console.log(uri);
-      setSavedImagePath(uri);
-      setImageURI(uri);
+      setSavedImagePath(imgUri);
+      setImageURI(imgUri);
+
+      let storageRef = firebase.storage();
+
+      // let response = await fetch(imgUri);
+      // let blob = response.blob();
+      // let file = await fetch(imgUri);
+      const metadata = {
+        contentType: 'image/jpeg',
+      };
+      const postIndex = Date.now().toString();
+      const imgURI = imageURI;
+      const response = await fetch(imgURI);
+      const blob = await response.blob();
+      const uploadRef = storageRef.ref('images').child(`${postIndex}`);
+
+      await uploadRef.put(blob, metadata).catch(() => {
+        alert('画像の保存に失敗しました');
+      });
+
+      // storageRef.child(`sample`).put(file).then(function(snapshot) {
+      //   console.log('Hello');
+      // });
+      // storageRef.put(blob, 'image/jpeg').catch(() =>{ alert('画像の保存に失敗しました'); });
+
     } catch (error) {
       console.log('error', error);
     }
