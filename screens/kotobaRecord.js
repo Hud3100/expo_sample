@@ -18,6 +18,8 @@ const recordComponent = () => {
   const [savedImagePath, setSavedImagePath] = useState('');
   const db = firebase.firestore();
 
+  // スクリーンショットと写真をポストする関数を分割する。
+
   const takeScreenShot = async () => {
     try {
       const imgUri = await captureRef(viewRef, {
@@ -28,17 +30,23 @@ const recordComponent = () => {
       setSavedImagePath(imgUri);
       setImageURI(imgUri);
 
+      // Firebaseアプリのstorage()サービスから、Google Cloud Strorageへの
+      // 参照を作成する
+
       let storageRef = firebase.storage();
 
-      // let response = await fetch(imgUri);
-      // let blob = response.blob();
-      // let file = await fetch(imgUri);
+
       const metadata = {
         contentType: 'image/jpeg',
       };
       const postIndex = Date.now().toString();
       const imgURI = imageURI;
+
+      // fetch()の引数にリソースへのパスを設定し、
+      // レスポンスオブジェクトを含むpromiseを取得。
       const response = await fetch(imgURI);
+      // Responseストリームを取得し、完全に読み込む。これは、Blobで
+      // 解決するpromiseを返す。
       const blob = await response.blob();
       const uploadRef = storageRef.ref('images').child(`${postIndex}`);
 
