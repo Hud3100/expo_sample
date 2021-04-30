@@ -9,17 +9,17 @@ import { Actions } from 'react-native-router-flux';
 const signInScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState('');
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
     const onButtonPress = () => {
         setLoading(true);
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then( () => {LoginSuccess();} )
-            .catch( (error) => {console.log(error.toString());} );
+            .then( () => {onLoginSuccess();} )
+            .catch( (authError) => {onLoginFail(authError); });
     }
 
-    const LoginSuccess = () => {
+    const onLoginSuccess = () => {
         setEmail('');
         setPassword('');
         setLoading(false);
@@ -27,9 +27,44 @@ const signInScreen = () => {
         console.log("Login Success");
     }
 
-    const LoginFail = () => {
+    const onLoginFail = (authError) => {
         setLoading(false);
-        setError('Authentication Failed');
+        setError(authError);
+        console.log(error);
+    }
+
+    const loadSpinner = () => {
+        if (loading) {
+            return <ActivityIndicator size="small" />
+        }
+
+        return (
+            <>
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={ () => onButtonPress()} underlayColor="#C70F66"
+                >
+                    <Text style={styles.buttonTitle}>ログインする！</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={ () => { Actions.signUp(); }}
+                    underlayColor="#C70F66"
+                >
+                    <Text style={styles.buttonTitle}>利用登録する！</Text>
+                </TouchableHighlight>
+            </>
+        );
+    }
+
+    const errorMessage = () => {
+        if (error) {
+            return (
+                <>
+                    <Text>{typeof error}</Text>
+                </>
+            );
+        }
     }
 
     return (
@@ -38,10 +73,13 @@ const signInScreen = () => {
             behavior={Platform.OS === "ios" ? "padding" : null}
         >
             <Text style={styles.title}>ココトバにログイン</Text>
+            <View>
+                {errorMessage()}
+            </View>
             <TextInput
                 style={styles.input}
                 value={email}
-                onChangeText={ (text) => {setEmail(text);} }
+                onChangeText={ (email_input) => {setEmail(email_input);} }
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Email Address"
@@ -49,25 +87,15 @@ const signInScreen = () => {
             <TextInput
                 style={styles.input}
                 value={password}
-                onChangeText={ (text) => {setPassword(text);} }
+                onChangeText={ (password_input) => {setPassword(password_input);} }
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Password"
                 secureTextEntry
             />
-            <TouchableHighlight
-                style={styles.button}
-                onPress={ () => onButtonPress()} underlayColor="#C70F66"
-            >
-                <Text style={styles.buttonTitle}>ログインする！</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-                style={styles.button}
-                onPress={ () => { Actions.signUp(); }}
-                underlayColor="#C70F66"
-            >
-                <Text style={styles.buttonTitle}>利用登録する！</Text>
-            </TouchableHighlight>
+            <View>
+                {loadSpinner()}
+            </View>
         </KeyboardAvoidingView>
     );
 };
