@@ -37,6 +37,7 @@ const RouterComponent = () => {
             title="言葉を残す"
             iconName='plus-circle'
             icon={TabBarIcon}
+            hideNavBar="true"
           />
           <Scene
             key="album"
@@ -46,13 +47,15 @@ const RouterComponent = () => {
             icon={TabBarIcon}
           />
           <Scene
-            key="signIn"
             initial={true}
+
+            key="signIn"
             component={signInScreen}
             tabBarLabel='設定'
             title="ログイン画面"
             iconName='wrench'
             icon={TabBarIcon}
+            hideNavBar="true"
           />
         </Tabs>
         <Scene

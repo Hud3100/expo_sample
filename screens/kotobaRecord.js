@@ -17,8 +17,8 @@ const recordComponent = () => {
   const [imageURI, setImageURI] = useState('https://raw.githubusercontent.com/AboutReact/sampleresource/master/sample_img.png',);
   const [savedImagePath, setSavedImagePath] = useState('');
   const db = firebase.firestore();
-
-  // スクリーンショットと写真をポストする関数を分割する。
+  const user = firebase.auth().currentUser;
+  const uid = user.uid;
 
   const takeScreenShot = async () => {
     try {
@@ -30,34 +30,20 @@ const recordComponent = () => {
       setSavedImagePath(imgUri);
       setImageURI(imgUri);
 
-      // Firebaseアプリのstorage()サービスから、Google Cloud Strorageへの
-      // 参照を作成する
-
       let storageRef = firebase.storage();
-
 
       const metadata = {
         contentType: 'image/jpeg',
       };
       const postIndex = Date.now().toString();
       const imgURI = imageURI;
-
-      // fetch()の引数にリソースへのパスを設定し、
-      // レスポンスオブジェクトを含むpromiseを取得。
       const response = await fetch(imgURI);
-      // Responseストリームを取得し、完全に読み込む。これは、Blobで
-      // 解決するpromiseを返す。
       const blob = await response.blob();
-      const uploadRef = storageRef.ref('images').child(`${postIndex}`);
+      const uploadRef = storageRef.ref().child('images/' + uid + '/' + postIndex);
 
       await uploadRef.put(blob, metadata).catch(() => {
         alert('画像の保存に失敗しました');
       });
-
-      // storageRef.child(`sample`).put(file).then(function(snapshot) {
-      //   console.log('Hello');
-      // });
-      // storageRef.put(blob, 'image/jpeg').catch(() =>{ alert('画像の保存に失敗しました'); });
 
     } catch (error) {
       console.log('error', error);
@@ -69,15 +55,6 @@ const recordComponent = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
-          {/* <Image
-            source={{uri: imageURI}}
-            style={{
-              width: 200,
-              height: 300,
-              resizeMode: 'contain',
-              marginTop: 5
-            }}
-          /> */}
           <ViewShot
             style={styles.viewShot}
             ref={viewRef}
@@ -107,6 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
+    paddingTop: 24
   },
   viewShot: {
     flex: 1,
