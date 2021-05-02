@@ -1,7 +1,7 @@
 import React from 'react';
 import { Scene, Router, Tabs, Actions } from 'react-native-router-flux';
 import { View, StyleSheet } from 'react-native';
-import pageA from './screens/pageA';
+import kotobaAlbum from './screens/kotobaAlbum';
 import recordComponent from './screens/kotobaRecord';
 import signInScreen from './screens/signInScreen';
 import signUpScreen from './screens/signUpScreen';
@@ -41,14 +41,14 @@ const RouterComponent = () => {
           />
           <Scene
             key="album"
-            component={pageA}
+            component={kotobaAlbum}
             title="アルバム"
             iconName='book'
             icon={TabBarIcon}
+            hideNavBar="true"
           />
           <Scene
             initial={true}
-
             key="signIn"
             component={signInScreen}
             tabBarLabel='設定'
