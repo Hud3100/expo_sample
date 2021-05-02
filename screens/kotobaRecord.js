@@ -4,40 +4,33 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform
 } from 'react-native';
 import ViewShot, { captureRef } from "react-native-view-shot";
 import PhraseInput from '../component/kokotobaInput';
 import firebase from "firebase";
 
 const recordComponent = () => {
-  const [imageURI, setImageURI] = useState('https://raw.githubusercontent.com/AboutReact/sampleresource/master/sample_img.png',);
-  const [savedImagePath, setSavedImagePath] = useState('');
-  const db = firebase.firestore();
+  const [uploadImageUri, setuploadImageUri] = useState('');
   const user = firebase.auth().currentUser;
   const uid = user.uid;
+  const viewRef = useRef();
 
   const takeScreenShot = async () => {
     try {
-      const imgUri = await captureRef(viewRef, {
+      const capturedImageUri = await captureRef(viewRef, {
         format: 'jpg',
         quality: 0.8,
         result: "tmpfile"
       });
-      setSavedImagePath(imgUri);
-      setImageURI(imgUri);
+      setuploadImageUri(capturedImageUri);
 
-      let storageRef = firebase.storage();
-
+      const storageRef = firebase.storage();
       const metadata = {
         contentType: 'image/jpeg',
       };
       const postIndex = Date.now().toString();
-      const imgURI = imageURI;
-      const response = await fetch(imgURI);
+      const response = await fetch(uploadImageUri);
       const blob = await response.blob();
       const uploadRef = storageRef.ref().child('images/' + uid + '/' + postIndex);
 
@@ -49,8 +42,6 @@ const recordComponent = () => {
       console.log('error', error);
     }
   };
-
-  const viewRef = useRef();
 
   return (
     <SafeAreaView style={{flex: 1}}>
