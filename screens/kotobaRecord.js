@@ -17,30 +17,30 @@ const recordComponent = () => {
     const viewRef = useRef();
 
     const takeScreenShot = async () => {
-    try {
-        const capturedImageUri = await captureRef(viewRef, {
-        format: 'jpg',
-        quality: 0.8,
-        result: "tmpfile"
-        });
-        setuploadImageUri(capturedImageUri);
+        try {
+            const capturedImageUri = await captureRef(viewRef, {
+                format: 'jpg',
+                quality: 0.8,
+                result: "tmpfile"
+            });
+            setuploadImageUri(capturedImageUri);
 
-        const storageRef = firebase.storage();
-        const metadata = {
-        contentType: 'image/jpeg',
-        };
-        const postIndex = Date.now().toString();
-        const response = await fetch(uploadImageUri);
-        const blob = await response.blob();
-        const uploadRef = storageRef.ref().child('images/' + uid + '/' + postIndex);
+            const storageRef = firebase.storage();
+            const metadata = {
+                contentType: 'image/jpeg',
+            };
+            const postIndex = Date.now().toString();
+            const response = await fetch(uploadImageUri);
+            const blob = await response.blob();
+            const uploadRef = storageRef.ref().child('images/' + uid + '/' + postIndex);
 
-        await uploadRef.put(blob, metadata).catch(() => {
-        alert('画像の保存に失敗しました');
-        });
+            await uploadRef.put(blob, metadata).catch(() => {
+                alert('画像の保存に失敗しました');
+            });
 
-    } catch (error) {
-        console.log('error', error);
-    }
+        } catch (error) {
+            console.log('error', error);
+        }
     };
 
     return (
