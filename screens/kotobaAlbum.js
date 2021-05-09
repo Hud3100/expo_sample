@@ -19,13 +19,25 @@ const kotobaAlbum = () => {
 
     // const userImagesRef = storageRef.ref().child('images/' + uid + '/1619976809623');
     const userImagesRef = storageRef.ref().child('images/' + uid);
+    const imagesUrlList = [];
     userImagesRef.listAll().then(function(res) {
         res.items.forEach(function(itemRef){
             itemRef.getDownloadURL().then(function(url){
-                console.log(url);
+                // URLのリストを作成する
+                imagesUrlList.push(url);
             });
         });
-    })
+    });
+
+    const images = imagesUrlList.map((url) =>
+        <Image
+            style={styles.imageGallary}
+            source={{
+                uri: `${url}`,
+            }}
+        />
+    );
+    // return時にURLのリストからmapでループさせてコンポーネントを作成
 
 
     return (
@@ -37,6 +49,7 @@ const kotobaAlbum = () => {
                     uri: `${showImageUri}`,
                 }}
             />
+            {images}
         </SafeAreaView>
     )
 }
