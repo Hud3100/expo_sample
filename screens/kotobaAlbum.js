@@ -1,55 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-    View,
+    ScrollView,
     Image,
     Text,
     StyleSheet,
-    SafeAreaView
+    SafeAreaView,
+    Button,
+    View
 } from 'react-native';
 import firebase from "firebase";
+import fetchUserPhotos from '../src/services/fetchUserPhotos';
 
 const kotobaAlbum = () => {
-
-    const storageRef = firebase.storage();
     const user = firebase.auth().currentUser;
-    const uid = user.uid;
+    const [imagesURLList, setImagesURLList] = useState([]);
 
-    // 画像の取得ここから
-    const [showImageUri, setShowImageUri] = useState('https://reactnative.dev/img/tiny_logo.png');
-
-    // const userImagesRef = storageRef.ref().child('images/' + uid + '/1619976809623');
-    const userImagesRef = storageRef.ref().child('images/' + uid);
-    const imagesUrlList = [];
-    userImagesRef.listAll().then(function(res) {
-        res.items.forEach(function(itemRef){
-            itemRef.getDownloadURL().then(function(url){
-                // URLのリストを作成する
-                imagesUrlList.push(url);
-            });
+    useEffect(() => {
+        fetchUserPhotos(user).then(result => {
+            setImagesURLList(result);
         });
-    });
+    }, [imagesURLList]);
 
-    const images = imagesUrlList.map((url) =>
+    const images = imagesURLList.map((url) =>
         <Image
-            style={styles.imageGallary}
+            style={styles.image}
             source={{
                 uri: `${url}`,
             }}
         />
     );
-    // return時にURLのリストからmapでループさせてコンポーネントを作成
 
+    const test = async (user) => {
+        let result = await fetchUserPhotos(user);
+        setImagesURLList(result);
+        console.log(imagesURLList);
+    }
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text>{showImageUri}</Text>
-            <Image
-                style={styles.imageGallary}
-                source={{
-                    uri: `${showImageUri}`,
-                }}
+            <Text>画像一覧</Text>
+            <Button
+                title="更新ボタン"
+                onPress={() => test(user)}
             />
-            {images}
+            <ScrollView>
+                <View style={styles.imagesContainer}>
+                    {images}
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -60,8 +58,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    imageGallary: {
-        width: 150,
+    imagesContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+    image: {
+        width: '33%',
         height: 150,
         resizeMode: 'stretch',
     }
