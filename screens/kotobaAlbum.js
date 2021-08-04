@@ -59,15 +59,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     imagesContainer: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
+        flexWrap: 'wrap',
     },
     image: {
         width: '33%',
         height: 150,
         resizeMode: 'stretch',
+        borderWidth: 1,
+        borderColor: "red"
     }
 });
 
