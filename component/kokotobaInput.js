@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, InputAccessoryView, Button, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, TextInput, InputAccessoryView, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const PhraseInput = () => {
@@ -32,18 +32,15 @@ const PhraseInput = () => {
 
 export default PhraseInput;
 
-
-import { Dimensions } from "react-native";
-
-var width = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
     textInputContainer: {
         flex: 1,
     },
     textInput: {
         flex: 1,
-        fontSize: 50,
+        padding: 16,
+        fontSize: 40,
+        fontFamily: 'NotoSansJP_500Medium',
     },
     keyboardIcon: {
         flex:1,

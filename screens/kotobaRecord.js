@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useRef } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -12,7 +12,7 @@ import firebase from "firebase";
 
 const recordComponent = () => {
     const user = firebase.auth().currentUser;
-    const uid = user.uid;
+    const uid = 'XH1p44CXVnRL1rTIE4npy0vL9C73';
     const viewRef = useRef();
     const storageRef = firebase.storage();
     const metadata = {
@@ -49,11 +49,11 @@ const recordComponent = () => {
                         quality: 0.8,
                     }}
                 >
-                <PhraseInput />
+                    <PhraseInput />
                 </ViewShot>
                 <TouchableOpacity
-                style={styles.buttonStyle}
-                onPress={takeScreenShot}
+                    style={styles.buttonStyle}
+                    onPress={takeScreenShot}
                 >
                 <Text style={styles.buttonTextStyle}>
                     Take ScreenShot

@@ -1,6 +1,16 @@
 import React, { Component, useEffect, useState } from 'react';
 import RouterComponent from './Router';
 import firebase from 'firebase';
+import {
+  useFonts,
+  NotoSansJP_100Thin,
+  NotoSansJP_300Light,
+  NotoSansJP_400Regular,
+  NotoSansJP_500Medium,
+  NotoSansJP_700Bold,
+  NotoSansJP_900Black
+} from '@expo-google-fonts/noto-sans-jp'
+import AppLoading from 'expo-app-loading';
 
 const app = () => {
   const [isloggedIn, setloggedIn] = useState(null);
@@ -17,6 +27,19 @@ const app = () => {
       });
     }
   }, []);
+
+  let [fontsLoaded] = useFonts({
+    NotoSansJP_100Thin,
+    NotoSansJP_300Light,
+    NotoSansJP_400Regular,
+    NotoSansJP_500Medium,
+    NotoSansJP_700Bold,
+    NotoSansJP_900Black
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   return (
     <RouterComponent />
