@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TouchableOpacity, TouchableHighlight,
-        TextInput, ActivityIndicator, StyleSheet, KeyboardAvoidingView, KeyboardAvoidingViewBase } from 'react-native';
+import { View, Text, TouchableHighlight,
+        TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 
@@ -15,7 +15,7 @@ const signUpScreen = () => {
         setLoading(true);
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(signUpSuccess())
-            .catch( (error) => {console.log(error.toString());} );
+            .catch( (error) => {onSignUpFail(error)} );
     }
 
     const signUpSuccess = () => {
@@ -25,14 +25,33 @@ const signUpScreen = () => {
         setError('');
     }
 
-    const LoginFail = () => {
+    const onSignUpFail = (error) => {
         setLoading(false);
-        setError('Authentication Failed');
+
+        switch (error.code) {
+            case 'auth/invalid-email':
+                setError('メールアドレスが正しくありません');
+                break;
+
+            case 'auth/weak-password':
+                setError('6文字以上のパスワードを設定してください');
+                break;
+
+            case 'auth/email-already-in-use':
+                setError('メールアドレスがすでに使用されています。ログインするか別のメールアドレスで作成してください');
+                break;
+
+            default:
+                setError('アカウントの作成に失敗しました。通信環境がいい所で再度やり直してください。');
+        }
     }
 
     return (
         <KeyboardAvoidingView style={styles.container}>
             <Text style={styles.title}>ココトバに登録</Text>
+            <View>
+                <Text>{error}</Text>
+            </View>
             <TextInput
                 style={styles.input}
                 value={email}

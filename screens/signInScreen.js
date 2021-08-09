@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
-    View, Text, Button, TouchableOpacity, TouchableHighlight,
-    TextInput, ActivityIndicator, StyleSheet, KeyboardAvoidingView, KeyboardAvoidingViewBase
+    View, Text, TouchableHighlight,
+    TextInput, ActivityIndicator, StyleSheet, KeyboardAvoidingView
 } from 'react-native';
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
@@ -16,7 +16,7 @@ const signInScreen = () => {
         setLoading(true);
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then( () => {onLoginSuccess();} )
-            .catch( (authError) => {onLoginFail(authError); });
+            .catch( (authError) => {onLoginFail(authError);} );
     }
 
     const onLoginSuccess = () => {
@@ -24,13 +24,27 @@ const signInScreen = () => {
         setPassword('');
         setLoading(false);
         setError('');
-        console.log("Login Success");
+        console.log('ログインに成功しました');
     }
 
-    const onLoginFail = (authError) => {
+    const onLoginFail = (error) => {
         setLoading(false);
-        setError(authError);
-        console.log(error);
+        switch (error.code) {
+            case 'auth/invalid-email':
+                setError('メールアドレスが正しくありません');
+                break;
+
+            case 'auth/wrong-password':
+                setError('パスワードが無効です');
+                break;
+
+            case 'auth/user-not-found':
+                setError('ユーザーが見つかりません');
+                break;
+
+            default:
+                setError('アカウントの作成に失敗しました。通信環境がいい所で再度やり直してください。');
+        }
     }
 
     const loadSpinner = () => {
@@ -57,16 +71,6 @@ const signInScreen = () => {
         );
     }
 
-    const errorMessage = () => {
-        if (error) {
-            return (
-                <>
-                    <Text>{typeof error}</Text>
-                </>
-            );
-        }
-    }
-
     return (
         <KeyboardAvoidingView
             style={styles.container}
@@ -74,12 +78,12 @@ const signInScreen = () => {
         >
             <Text style={styles.title}>ココトバにログイン</Text>
             <View>
-                {errorMessage()}
+                <Text>{error}</Text>
             </View>
             <TextInput
                 style={styles.input}
                 value={email}
-                onChangeText={ (email_input) => {setEmail(email_input);} }
+                onChangeText={ (emailInput) => {setEmail(emailInput);} }
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Email Address"
@@ -87,7 +91,7 @@ const signInScreen = () => {
             <TextInput
                 style={styles.input}
                 value={password}
-                onChangeText={ (password_input) => {setPassword(password_input);} }
+                onChangeText={ (passwordInput) => {setPassword(passwordInput);} }
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Password"
@@ -117,7 +121,6 @@ const styles = StyleSheet.create({
         borderRadius : 3,
         width : '80%',
         height : 35,
-        // padding : 10,
         margin : 10,
     },
     button: {
@@ -127,7 +130,6 @@ const styles = StyleSheet.create({
         width: 100,
         textAlign: 'center',
         alignItems: 'center',
-        // flex: 1,
         justifyContent: 'center'
     },
     text: {
