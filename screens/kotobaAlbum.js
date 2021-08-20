@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
-    ScrollView,
-    Image,
-    Text,
-    StyleSheet,
-    SafeAreaView,
     Button,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
     View
 } from 'react-native';
 import firebase from "firebase";
 import fetchUserPhotos from '../src/services/fetchUserPhotos';
+import { Actions } from 'react-native-router-flux';
 
 const kotobaAlbum = () => {
     const user = firebase.auth().currentUser;
@@ -22,12 +23,17 @@ const kotobaAlbum = () => {
     }, [imagesURLList]);
 
     const images = imagesURLList.map((url) =>
-        <Image
-            style={styles.image}
-            source={{
-                uri: `${url}`,
-            }}
-        />
+        <TouchableHighlight
+            style={styles.imageWrapper}
+            onPress={() => { Actions.kotobaDetail({imageURL: url}) }}
+        >
+            <Image
+                style={styles.image}
+                source={{
+                    uri: `${url}`,
+                }}
+            />
+        </TouchableHighlight>
     );
 
     const test = async (user) => {
@@ -37,7 +43,7 @@ const kotobaAlbum = () => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <>
             <Text>画像一覧</Text>
             <Button
                 title="更新ボタン"
@@ -48,7 +54,7 @@ const kotobaAlbum = () => {
                     {images}
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }
 
@@ -64,12 +70,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
         flexWrap: 'wrap',
     },
-    image: {
+    imageWrapper: {
         width: '33%',
         height: 150,
         resizeMode: 'stretch',
         borderWidth: 1,
         borderColor: "red"
+    },
+    image: {
+        width: '100%',
+        height: 150,
+        resizeMode: 'stretch',
     }
 });
 

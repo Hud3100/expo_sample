@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import {
-    SafeAreaView,
     StyleSheet,
     Text,
     View,
@@ -39,7 +38,6 @@ const recordComponent = () => {
     };
 
     return (
-        <SafeAreaView style={{flex: 1}}>
             <View style={styles.container}>
                 <ViewShot
                     style={styles.viewShot}
@@ -60,7 +58,6 @@ const recordComponent = () => {
                 </Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
     )
 };
 

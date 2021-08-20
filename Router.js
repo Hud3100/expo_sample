@@ -1,10 +1,11 @@
 import React from 'react';
-import { Scene, Router, Tabs, Actions } from 'react-native-router-flux';
-import { View, StyleSheet } from 'react-native';
+import { Scene, Router, Tabs, Stack } from 'react-native-router-flux';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import kotobaAlbum from './screens/kotobaAlbum';
 import recordComponent from './screens/kotobaRecord';
 import signInScreen from './screens/signInScreen';
 import signUpScreen from './screens/signUpScreen';
+import kotobaDetail from './screens/kotobaDetailScreen';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const TabBarIcon = (props) => (
@@ -19,7 +20,7 @@ const TabBarIcon = (props) => (
 
 const RouterComponent = () => {
   return (
-    <Router>
+      <Router>
       <Scene
         key="root"
         hideNavBar={true}
@@ -39,14 +40,28 @@ const RouterComponent = () => {
             icon={TabBarIcon}
             hideNavBar="true"
           />
-          <Scene
-            key="album"
-            component={kotobaAlbum}
-            title="アルバム"
+          <Stack
+            key='album'
             iconName='book'
             icon={TabBarIcon}
-            hideNavBar="true"
-          />
+            initial={true}
+            duration={0}
+
+          >
+            <Scene
+              key="albumAll"
+              component={kotobaAlbum}
+              title="アルバム"
+              iconName='book'
+              icon={TabBarIcon}
+              initial={true}
+            />
+            <Scene
+              component={kotobaDetail}
+              title='言葉詳細画面'
+              key='kotobaDetail'
+            />
+          </Stack>
           <Scene
             initial={true}
             key="signIn"

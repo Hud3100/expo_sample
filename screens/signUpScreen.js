@@ -5,7 +5,6 @@ import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 
 const signUpScreen = () => {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState('');

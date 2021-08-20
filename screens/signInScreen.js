@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
     buttonTitle: {
         textAlign: 'center',
         alignItems: 'center',
-
     }
 })
 

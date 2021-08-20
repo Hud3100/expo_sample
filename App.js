@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import RouterComponent from './Router';
+import { SafeAreaView, View } from 'react-native';
 import firebase from 'firebase';
 import {
   useFonts,
@@ -42,7 +43,9 @@ const app = () => {
   }
 
   return (
-    <RouterComponent />
+    <View style={{ flex: 1 }}>
+      <RouterComponent />
+    </View>
   )
 };
 
