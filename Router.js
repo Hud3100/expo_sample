@@ -6,13 +6,14 @@ import recordComponent from './screens/kotobaRecord';
 import signInScreen from './screens/signInScreen';
 import signUpScreen from './screens/signUpScreen';
 import kotobaDetail from './screens/kotobaDetailScreen';
+import test from './screens/test';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const TabBarIcon = (props) => (
   <View style={styles.tabIconContainer}>
     <Icon
       name={props.iconName}
-      color={props.focused ? '#f3a68c' : 'grey'}
+      color={props.focused ? '#FFE3ED' : 'grey'}
       style={styles.tabIcon}
     />
   </View>
@@ -46,7 +47,6 @@ const RouterComponent = () => {
             icon={TabBarIcon}
             initial={true}
             duration={0}
-
           >
             <Scene
               key="albumAll"
@@ -62,16 +62,30 @@ const RouterComponent = () => {
               key='kotobaDetail'
             />
           </Stack>
-          <Scene
-            initial={true}
-            key="signIn"
-            component={signInScreen}
-            tabBarLabel='設定'
-            title="ログイン画面"
+          <Stack
+            key='userpage'
+            iconName='book'
             iconName='wrench'
             icon={TabBarIcon}
-            hideNavBar="true"
-          />
+            initial={true}
+            duration={0}
+          >
+            {/* <Scene
+              initial={true}
+              key="signIn"
+              component={test}
+              tabBarLabel='設定'
+              title="テスト画面"
+              hideNavBar="true"
+            /> */}
+            <Scene
+              key="signIn"
+              component={signInScreen}
+              tabBarLabel='設定'
+              title="ログイン画面"
+              hideNavBar="true"
+            />
+          </Stack>
         </Tabs>
         <Scene
           key="signUp"
