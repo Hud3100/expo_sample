@@ -17,22 +17,22 @@ const signUpScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    const { handleSubmit, control, formState: { errors }, getValues } = useForm({mode: 'onBlur'});
+    const { handleSubmit, control, formState: { errors }, getValues, watch } = useForm({mode: 'onBlur'});
 
-    const onButtonPress = () => {
+    const onButtonPress = (data) => {
         setLoading(true);
-        createUser(email, password);
+        createUser(data);
     }
 
     // ユーザー作成処理
-    const createUser = (email, password) => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+    const createUser = (data) => {
+        firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
             .then(function(result) {
                 const userCollection = firebase.firestore().collection('users');
 
                 userCollection.doc(result.user.uid).set({
-                    name: name,
-                    childName: childName,
+                    name: data.name,
+                    childName: '子供の名前',
                 })
                 .then(() => {
                     console.log('ユーザーデータが正常に保存されました');
@@ -77,8 +77,8 @@ const signUpScreen = () => {
 
     return (
         <SafeAreaView style={styles.wrapper}>
-            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={100}>
-                <ScrollView>
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={75}>
+                <ScrollView style={ { flex: 1 }}>
                     <Text style={styles.title}>ココトバに登録しよう</Text>
                     <View style={styles.error}>
                         <Text style={styles.errorText}>{error}</Text>
@@ -91,13 +91,14 @@ const signUpScreen = () => {
                             rules={{
                                 required: {
                                     value: true,
-                                    message: '名前を入力してください'
-                                }
+                                    message: 'あなたのお名前を入力してください'
+                                },
                             }}
                             render={({ field: { onChange, value, onBlur } }) => (
                                 <Input
                                     onChangeText={(value) => onChange(value)}
                                     value={value}
+                                    autoCapitalize='none'
                                     onBlur={onBlur}
                                     placeholder='あなたのお名前（ニックネーム）'
                                     error={errors?.name}
@@ -123,6 +124,7 @@ const signUpScreen = () => {
                                 <Input
                                     onChangeText={(value) => onChange(value)}
                                     value={value}
+                                    autoCapitalize='none'
                                     onBlur={onBlur}
                                     placeholder='あなたのメールアドレス'
                                     error={errors?.email}
@@ -147,7 +149,9 @@ const signUpScreen = () => {
                             render={({ field: { onChange, value, onBlur } }) => (
                                 <Input
                                     onChangeText={(value) => onChange(value)}
-                                    value={"T"}
+                                    value={value}
+                                    autoCapitalize='none'
+                                    secureTextEntry={true}
                                     onBlur={onBlur}
                                     placeholder='パスワード'
                                     error={errors?.password}
@@ -156,22 +160,26 @@ const signUpScreen = () => {
                             )}
                         />
                         <Controller
-                            name="passwordConfirm"
+                            name='passwordConfirm'
                             control={control}
-                            defaultValue=""
+                            defaultValue=''
                             rules={{
-                                validate: {
-                                    matchesPreviousPassword: value => value === getValues(password) || "パスワードが一致しません"
-                                },
+                                validate: value => value === getValues('password') || 'パスワードが一致しません',
                                 required: {
                                     value: true,
                                     message: '確認用のパスワードを入力してください'
                                 },
+                                minLength: {
+                                    value: 6,
+                                    message: 'パスワードは6文字以上で入力してください',
+                                }
                             }}
                             render={({ field: { onChange, value, onBlur } }) => (
                                 <Input
                                     onChangeText={(value) => onChange(value)}
                                     value={value}
+                                    autoCapitalize='none'
+                                    secureTextEntry={true}
                                     onBlur={onBlur}
                                     placeholder='パスワード確認用'
                                     error={errors?.passwordConfirm}
@@ -181,7 +189,7 @@ const signUpScreen = () => {
                         />
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableHighlight style={styles.button} onPress={ () => onButtonPress()} underlayColor="#C70F66">
+                        <TouchableHighlight style={styles.button} onPress={ handleSubmit(onButtonPress) } underlayColor="#C70F66">
                             <Text style={styles.buttonTitle}>登録</Text>
                         </TouchableHighlight>
                         <TouchableHighlight style={styles.button} onPress={ () => { Actions.pop(); }} underlayColor="#C70F66">
