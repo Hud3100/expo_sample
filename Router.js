@@ -80,7 +80,7 @@ const RouterComponent = () => {
             /> */}
             <Scene
               key="signIn"
-              component={signInScreen}
+              component={signUpScreen}
               tabBarLabel='設定'
               title="ログイン画面"
               hideNavBar="true"
