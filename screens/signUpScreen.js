@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ScrollView, Text, View, TouchableHighlight, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
@@ -6,27 +6,22 @@ import 'firebase/firestore';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm, Controller } from 'react-hook-form';
 import Input from '../component/input';
-import { NotoSansJP_400Regular } from '@expo-google-fonts/noto-sans-jp';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const signUpScreen = () => {
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [childName, setChildName] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const { handleSubmit, control, formState: { errors }, getValues, watch } = useForm({mode: 'onBlur'});
+    const { handleSubmit, control, errors, formState, getValues } = useForm({mode: 'onBlur'});
+    const { isSubmitting } = formState;
 
     const onButtonPress = (data) => {
-        setLoading(true);
-        createUser(data);
+        return createUser(data);
     }
 
-    // ユーザー作成処理
     const createUser = (data) => {
-        firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+        return firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
             .then(function(result) {
                 const userCollection = firebase.firestore().collection('users');
 
@@ -46,10 +41,6 @@ const signUpScreen = () => {
     }
 
     const signUpSuccess = () => {
-        setEmail('');
-        setPassword('');
-        setName('');
-        setChildName('');
         setLoading(false);
         setError('');
     }
@@ -77,6 +68,12 @@ const signUpScreen = () => {
 
     return (
         <SafeAreaView style={styles.wrapper}>
+            <Spinner
+                visible={ isSubmitting }
+                textContent="読み込み中"
+                textStyle={{ color: "#fff" }}
+                overlayColor='rgba(0, 0, 0, 0.5)'
+            />
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={75}>
                 <ScrollView style={ { flex: 1 }}>
                     <Text style={styles.title}>ココトバに登録しよう</Text>
@@ -87,7 +84,7 @@ const signUpScreen = () => {
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue=""
+                            defaultValue="test"
                             rules={{
                                 required: {
                                     value: true,
@@ -109,7 +106,7 @@ const signUpScreen = () => {
                         <Controller
                             name="email"
                             control={control}
-                            defaultValue=""
+                            defaultValue="test@example.com"
                             rules={{
                                 required: {
                                     value: true,
@@ -135,7 +132,7 @@ const signUpScreen = () => {
                         <Controller
                             name="password"
                             control={control}
-                            defaultValue=""
+                            defaultValue='testtest'
                             rules={{
                                 required: {
                                     value: true,
@@ -162,7 +159,7 @@ const signUpScreen = () => {
                         <Controller
                             name='passwordConfirm'
                             control={control}
-                            defaultValue=''
+                            defaultValue='testtest'
                             rules={{
                                 validate: value => value === getValues('password') || 'パスワードが一致しません',
                                 required: {
