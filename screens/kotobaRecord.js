@@ -4,14 +4,16 @@ import {
     Text,
     View,
     TouchableOpacity,
+    TextInput
 } from 'react-native';
 import ViewShot, { captureRef } from "react-native-view-shot";
 import PhraseInput from '../component/kokotobaInput';
 import firebase from "firebase";
+import { Actions } from "react-native-router-flux";
 
 const recordComponent = () => {
     const user = firebase.auth().currentUser;
-    const uid = 'XH1p44CXVnRL1rTIE4npy0vL9C73';
+    const uid = 'c4N6GIpxmNbmN1NN3Yr6DDrFKPI3';
     const viewRef = useRef();
     const storageRef = firebase.storage();
     const metadata = {
@@ -31,7 +33,8 @@ const recordComponent = () => {
             const blob = await response.blob();
             const uploadRef = storageRef.ref().child('images/' + uid + '/' + postIndex);
 
-            await uploadRef.put(blob, metadata);
+            // getDownloadUrl
+            let test = await uploadRef.put(blob, metadata);
         } catch (error) {
             console.log('error', error);
         }
@@ -49,13 +52,33 @@ const recordComponent = () => {
                 >
                     <PhraseInput />
                 </ViewShot>
+                <View
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '90%',
+                            borderBottomColor: 'black',
+                            borderBottomWidth: 1,
+                        }}
+                    />
+                </View>
+                <TextInput
+                    style={styles.commentInput}
+                    defaultValue={"コメント"}
+                    multiline={true}
+                />
                 <TouchableOpacity
                     style={styles.buttonStyle}
                     onPress={takeScreenShot}
                 >
-                <Text style={styles.buttonTextStyle}>
-                    Take ScreenShot
-                </Text>
+                    <Text style={styles.buttonTextStyle}>
+                        ことばを残す
+                    </Text>
                 </TouchableOpacity>
             </View>
     )
@@ -67,10 +90,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFF',
-        paddingTop: 24
+        paddingTop: 48,
     },
     viewShot: {
-        flex: 1,
+        flex: 3,
         alignItems: 'stretch'
     },
     titleText: {
@@ -82,14 +105,23 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 10,
     },
+    commentInput: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '90%',
+        flex: 1,
+        padding: 16,
+        fontSize: 20,
+        fontFamily: 'NotoSansJP_500Medium',
+    },
     buttonStyle: {
-        fontSize: 16,
         color: 'white',
         backgroundColor: 'green',
-        padding: 5,
+        padding: 12,
         minWidth: 250,
     },
     buttonTextStyle: {
+        fontSize: 20,
         padding: 5,
         color: 'white',
         textAlign: 'center',

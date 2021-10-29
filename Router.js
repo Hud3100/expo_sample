@@ -40,12 +40,12 @@ const RouterComponent = () => {
             iconName='plus-circle'
             icon={TabBarIcon}
             hideNavBar="true"
+            initial={true}
           />
           <Stack
             key='album'
             iconName='book'
             icon={TabBarIcon}
-            initial={true}
             duration={0}
           >
             <Scene
@@ -54,7 +54,6 @@ const RouterComponent = () => {
               title="アルバム"
               iconName='book'
               icon={TabBarIcon}
-              initial={true}
             />
             <Scene
               component={kotobaDetail}
@@ -67,7 +66,6 @@ const RouterComponent = () => {
             iconName='book'
             iconName='wrench'
             icon={TabBarIcon}
-            initial={true}
             duration={0}
           >
             {/* <Scene
