@@ -186,10 +186,18 @@ const signUpScreen = () => {
                         />
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableHighlight style={styles.button} onPress={ handleSubmit(onButtonPress) } underlayColor="#C70F66">
+                        <TouchableHighlight
+                            style={styles.button}
+                            onPress={ handleSubmit(onButtonPress) }
+                            underlayColor="#C70F66"
+                        >
                             <Text style={styles.buttonTitle}>登録</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight style={styles.button} onPress={ () => { Actions.pop(); }} underlayColor="#C70F66">
+                        <TouchableHighlight
+                            style={styles.button}
+                            onPress={ () => { Actions.signIn(); }}
+                            underlayColor="#C70F66"
+                        >
                             <Text style={styles.buttonTitle}>ログインはこちらから</Text>
                         </TouchableHighlight>
                     </View>

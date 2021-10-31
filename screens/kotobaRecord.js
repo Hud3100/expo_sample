@@ -9,6 +9,7 @@ import {
 import ViewShot, { captureRef } from "react-native-view-shot";
 import PhraseInput from '../component/kokotobaInput';
 import firebase from "firebase";
+import { getNowDate, getUid } from '../modules/firebase/index'
 import { Actions } from "react-native-router-flux";
 
 const recordComponent = () => {
@@ -33,12 +34,34 @@ const recordComponent = () => {
             const blob = await response.blob();
             const uploadRef = storageRef.ref().child('images/' + uid + '/' + postIndex);
 
-            // getDownloadUrl
-            let test = await uploadRef.put(blob, metadata);
+            uploadRef.put(blob, metadata).then(function(url) {
+                uploadRef.getDownloadURL().then(function(url) {
+                    createFeed('テスト', url)
+                }).catch(function(error) {
+                    console.log(error);
+                })
+            });
         } catch (error) {
             console.log('error', error);
         }
     };
+
+    const createFeed = (description ,url) => {
+        const { uid } = getUid();
+        const feedCollection = firebase.firestore().collection('feed');
+        feedCollection.doc(uid).set({
+            image_url: url,
+            description: description,
+            created_at: getNowDate(),
+            updated_at: getNowDate()
+        })
+        .then(() => {
+            console.log('投稿されたよー');
+        })
+        .catch((error) => {
+            console.log('投稿されてない' + error);
+        });
+    }
 
     return (
             <View style={styles.container}>

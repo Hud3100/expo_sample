@@ -40,7 +40,6 @@ const RouterComponent = () => {
             iconName='plus-circle'
             icon={TabBarIcon}
             hideNavBar="true"
-            initial={true}
           />
           <Stack
             key='album'
@@ -63,34 +62,26 @@ const RouterComponent = () => {
           </Stack>
           <Stack
             key='userpage'
-            iconName='book'
-            iconName='wrench'
+            iconName='user'
             icon={TabBarIcon}
-            duration={0}
+            initial={true}
           >
-            {/* <Scene
-              initial={true}
-              key="signIn"
-              component={test}
-              tabBarLabel='設定'
-              title="テスト画面"
-              hideNavBar="true"
-            /> */}
             <Scene
               key="signIn"
-              component={signUpScreen}
+              initial={true}
+              component={signInScreen}
               tabBarLabel='設定'
               title="ログイン画面"
               hideNavBar="true"
             />
+            <Scene
+              key="signUp"
+              component={signUpScreen}
+              title="利用登録画面"
+            />
           </Stack>
         </Tabs>
-        <Scene
-          key="signUp"
-          component={signUpScreen}
-          title="利用登録画面"
-          duration={1000}
-        />
+
       </Scene>
     </Router>
   )
