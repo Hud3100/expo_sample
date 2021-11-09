@@ -56,7 +56,7 @@ const RouterComponent = () => {
             />
             <Scene
               component={kotobaDetail}
-              title='言葉詳細画面'
+              title='ことばを詳しく'
               key='kotobaDetail'
             />
           </Stack>

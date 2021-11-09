@@ -7,16 +7,16 @@ import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 
 const signInScreen = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('test2345@example.com');
+    const [password, setPassword] = useState('testtest');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
     const onButtonPress = () => {
         setLoading(true);
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then( () => {onLoginSuccess();} )
-            .catch( (authError) => {onLoginFail(authError);} );
+            .then( () => { onLoginSuccess(); })
+            .catch( (authError) => { onLoginFail(authError); } );
     }
 
     const onLoginSuccess = () => {
