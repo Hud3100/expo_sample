@@ -1,38 +1,52 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import React, { Component, useEffect, useState } from 'react';
+import RouterComponent from './Router';
+import { SafeAreaView, View } from 'react-native';
+import firebase from 'firebase';
+import {
+  useFonts,
+  NotoSansJP_100Thin,
+  NotoSansJP_300Light,
+  NotoSansJP_400Regular,
+  NotoSansJP_500Medium,
+  NotoSansJP_700Bold,
+  NotoSansJP_900Black
+} from '@expo-google-fonts/noto-sans-jp'
+import AppLoading from 'expo-app-loading';
 
+const app = () => {
+  const [isloggedIn, setloggedIn] = useState(null);
 
-export default class App extends React.Component {
+  useEffect(() => {
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey: "AIzaSyDQvk5_yr1A5gRmVKKchksQ3mCONAjb3zA",
+        authDomain: "kokotoba-335e6.firebaseapp.com",
+        projectId: "kokotoba-335e6",
+        storageBucket: "kokotoba-335e6.appspot.com",
+        messagingSenderId: "172079050691",
+        appId: "1:172079050691:web:978b3ef3497bbdfdcfd776",
+      });
+    }
+  }, []);
 
-  state = {
-    text1 : "placeholder"
+  let [fontsLoaded] = useFonts({
+    NotoSansJP_100Thin,
+    NotoSansJP_300Light,
+    NotoSansJP_400Regular,
+    NotoSansJP_500Medium,
+    NotoSansJP_700Bold,
+    NotoSansJP_900Black
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>入力してください</Text>
-        <TextInput
-          onChangeText = {(t) => this.setState({text1:t})}
-        />
-        <Button
-          title="Entry"
-          onPress={this.entry}
-        />
-      </View>
-    );
-  }
+  return (
+    <View style={{ flex: 1 }}>
+      <RouterComponent />
+    </View>
+  )
+};
 
-  entry = () => {
-    alert(this.state.text1);
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default app;
